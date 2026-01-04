@@ -48,6 +48,14 @@ COPY --from=frontend-builder /app/dist /usr/share/nginx/html
 # Копируем бэкенд
 COPY --from=backend /app /app/backend
 
+# Копируем Python из backend stage
+COPY --from=backend /usr/local/bin/ /usr/local/bin/
+COPY --from=backend /usr/local/lib/python3.11/ /usr/local/lib/python3.11/
+
+# Устанавливаем переменные окружения для Python
+ENV PATH="/usr/local/bin:$PATH"
+ENV PYTHONPATH="/usr/local/lib/python3.11/site-packages"
+
 WORKDIR /app
 
 # Устанавливаем Python зависимости в контейнер с Nginx
@@ -58,4 +66,4 @@ COPY services/.env /app/backend/services/.env
 
 EXPOSE 3000 8000
 
-CMD ["/bin/sh", "-c", "nginx & python3 -m uvicorn main:app --host 0.0.0.0 --port 8000"]
+CMD ["/bin/sh", "-c", "nginx & cd /app/backend && python -m uvicorn main:app --host 0.0.0.0 --port 800"]
