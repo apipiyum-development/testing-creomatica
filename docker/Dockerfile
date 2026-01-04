@@ -1,4 +1,6 @@
 # Многоступенчатый Dockerfile для LLM Council
+# Используем Python-контейнер с установленным nginx для решения проблемы "python3: not found"
+
 # Stage 1: Сборка фронтенда
 FROM node:18-alpine AS frontend-builder
 
@@ -15,14 +17,12 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Установка бэкенда
-FROM python:3.11-slim AS backend
+FROM python:3.11-alpine AS backend
 
 WORKDIR /app
 
 # Установка системных зависимостей
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache gcc musl-dev
 
 # Установка зависимостей Python
 COPY requirements.txt .
@@ -35,35 +35,34 @@ COPY . .
 # Копируем собранный фронтенд из предыдущего этапа
 COPY --from=frontend-builder /app/dist /app/dist
 
-# Stage 3: Установка и настройка Nginx
-FROM nginx:alpine AS production
+# Stage 3: Финальный образ с Python и nginx
+FROM python:3.11-alpine AS production
+
+# Установка nginx и необходимых утилит
+RUN apk add --no-cache nginx && \
+    # Создание директории для статических файлов
+    mkdir -p /usr/share/nginx/html && \
+    # Создание директории для конфигурации nginx
+    mkdir -p /etc/nginx/conf.d
+
+WORKDIR /app
 
 # Копируем конфигурацию Nginx
-RUN rm /etc/nginx/conf.d/default.conf
-COPY docker/nginx.conf /etc/nginx/conf.d/nginx.conf
+RUN rm -f /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/
 
 # Копируем собранный фронтенд
 COPY --from=frontend-builder /app/dist /usr/share/nginx/html
 
 # Копируем бэкенд
-COPY --from=backend /app /app/backend
-
-# Копируем Python из backend stage
-COPY --from=backend /usr/local/bin/ /usr/local/bin/
-COPY --from=backend /usr/local/lib/python3.11/ /usr/local/lib/python3.11/
-
-# Устанавливаем переменные окружения для Python
-ENV PATH="/usr/local/bin:$PATH"
-ENV PYTHONPATH="/usr/local/lib/python3.11/site-packages"
+COPY --from=backend /app /app
 
 WORKDIR /app
 
-# Устанавливаем Python зависимости в контейнер с Nginx
-# Удалено из-за PEP 668 - зависимости теперь в backend stage
-
 # Копируем переменные окружения
-COPY services/.env /app/backend/services/.env
+COPY services/.env /app/services/.env
 
 EXPOSE 3000 8000
 
-CMD ["/bin/sh", "-c", "nginx & cd /app/backend && python -m uvicorn main:app --host 0.0.0.0 --port 800"]
+# Запуск nginx и uvicorn одновременно
+CMD ["/bin/sh", "-c", "nginx && python -m uvicorn main:app --host 0.0.0.0 --port 8000"]
