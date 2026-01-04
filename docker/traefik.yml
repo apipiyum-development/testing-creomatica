@@ -1,0 +1,21 @@
+# Конфигурация для интеграции с traefik
+# Этот файл содержит настройки для маршрутизации трафика на llm.clusterdev.ru
+
+# labels для docker-compose.yml:
+# - "traefik.enable=true"
+# - "traefik.http.routers.llm-council.rule=Host(`llm.clusterdev.ru`)"
+# - "traefik.http.routers.llm-council.entrypoints=web,websecure"
+# - "traefik.http.routers.llm-council.tls=true"
+# - "traefik.http.routers.llm-council.tls.certresolver=mytlschallenge"
+# - "traefik.http.routers.llm-council.service=llm-council-service"
+# - "traefik.http.services.llm-council-service.loadbalancer.server.port=3000"
+# - "traefik.http.services.llm-council-service.loadbalancer.server.scheme=http"
+# 
+# - "traefik.http.routers.llm-council-api.rule=Host(`llm.clusterdev.ru`) && PathPrefix(`/council`)"
+# - "traefik.http.routers.llm-council-api.entrypoints=web,websecure"
+# - "traefik.http.routers.llm-council-api.tls=true"
+# - "traefik.http.routers.llm-council-api.tls.certresolver=mytlschallenge"
+# - "traefik.http.routers.llm-council-api.service=llm-council-api-service"
+# - "traefik.http.routers.llm-council-api.priority=100"
+# - "traefik.http.services.llm-council-api-service.loadbalancer.server.port=8000"
+# - "traefik.http.services.llm-council-api-service.loadbalancer.server.scheme=http"

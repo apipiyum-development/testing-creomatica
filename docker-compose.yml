@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  llm-council:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: llm-council
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+      - services/.env
+    networks:
+      - n8n_default
+    restart: always
+    # Настройки безопасности
+    security_opt:
+      - no-new-privileges:true
+    # Ограничения ресурсов
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    # Labels для traefik
+    labels:
+      # Основной роут для фронтенда
+      - "traefik.enable=true"
+      - "traefik.http.routers.llm-council.rule=Host(`llm.clusterdev.ru`)"
+      - "traefik.http.routers.llm-council.entrypoints=web,websecure"
+      - "traefik.http.routers.llm-council.tls=true"
+      - "traefik.http.routers.llm-council.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.llm-council.service=llm-council-service"
+      
+      # Настройки для сервиса фронтенда
+      - "traefik.http.services.llm-council-service.loadbalancer.server.port=3000"
+      - "traefik.http.services.llm-council-service.loadbalancer.server.scheme=http"
+      
+      # Роут для API (включая SSE endpoint)
+      - "traefik.http.routers.llm-council-api.rule=Host(`llm.clusterdev.ru`) && PathPrefix(`/council`)"
+      - "traefik.http.routers.llm-council-api.entrypoints=web,websecure"
+      - "traefik.http.routers.llm-council-api.tls=true"
+      - "traefik.http.routers.llm-council-api.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.llm-council-api.service=llm-council-api-service"
+      - "traefik.http.routers.llm-council-api.priority=100"
+      
+      # Настройки для API сервиса с учетом SSE
+      - "traefik.http.services.llm-council-api-service.loadbalancer.server.port=8000"
+      - "traefik.http.services.llm-council-api-service.loadbalancer.server.scheme=http"
+      
+      # Особые настройки для обработки SSE
+      - "traefik.http.services.llm-council-api-service.loadbalancer.responseforwarding.flushinterval=100ms"
+
+networks:
+  n8n_default:
+    external: true
