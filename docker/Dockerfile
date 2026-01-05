@@ -60,6 +60,8 @@ user=root\n\
 [program:nginx]\n\
 command=/usr/sbin/nginx -g \"daemon off;\"\n\
 priority=1\n\
+autorestart=true\n\
+redirect_stderr=true\n\
 \n\
 [program:uvicorn]\n\
 command=python -m uvicorn main:app --host 0.0.0.0 --port 8000\n\
