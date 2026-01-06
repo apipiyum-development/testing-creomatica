@@ -13,10 +13,6 @@ RUN npm install
 # Копируем остальные исходные файлы
 COPY . .
 
-# Устанавливаем и настраиваем Tailwind CSS
-RUN npm install -D tailwindcss postcss autoprefixer
-RUN npx tailwindcss init -p
-
 # Собираем фронтенд
 RUN npm run build
 
