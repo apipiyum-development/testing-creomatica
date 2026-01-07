@@ -1,6 +1,6 @@
 # LLM Council - Совет Нейросетей
 
-['public/assets/hero/ready_consil.jpg']
+[`public/assets/hero/ready_consil.jpg`]
 
 ## Адаптивный интерфейс
 
