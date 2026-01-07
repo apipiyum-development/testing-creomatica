@@ -31,7 +31,7 @@ app = FastAPI(title="LLM Council API", description="API for running LLM council 
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://sovet.creomatica.ru"],  # Production CORS настройки
+    allow_origins=["https://ваш_домен.ru"],  # Production CORS настройки
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],  # Разрешить указанные методы
     allow_headers=["Content-Type", "Authorization"],  # Разрешить указанные заголовки
@@ -93,11 +93,11 @@ async def council_deliberation_stream(request: CouncilRequest):
         event_generator(),
         media_type="text/event-stream",
         headers={
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "Access-Control-Allow-Origin": "https://sovet.creomatica.ru",
-            "Access-Control-Allow-Headers": "Cache-Control"
-        }
+           "Cache-Control": "no-cache",
+           "Connection": "keep-alive",
+           "Access-Control-Allow-Origin": "https://ваш_домен.ru",
+           "Access-Control-Allow-Headers": "Cache-Control"
+       }
     )
 
 if __name__ == "__main__":
