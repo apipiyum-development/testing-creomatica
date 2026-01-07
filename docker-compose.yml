@@ -6,8 +6,6 @@ services:
       context: .
       dockerfile: docker/Dockerfile.backend
     container_name: llm-council-backend
-    ports:
-      - "8001:8000" # Публикация порта для доступа снаружи
     environment:
       - NODE_ENV=production
     env_file:
@@ -32,17 +30,12 @@ services:
     labels:
       # Роут для API (включая SSE endpoint)
       - "traefik.enable=true"
-      - "traefik.http.routers.llm-council-api.rule=Host(`creomatica.ru`) && PathPrefix(`/consilium/council`)"
+      - "traefik.http.routers.llm-council-api.rule=Host(`sovet.creomatica.ru`) && PathPrefix(`/council`)"
       - "traefik.http.routers.llm-council-api.entrypoints=web,websecure"
       - "traefik.http.routers.llm-council-api.tls=true"
       - "traefik.http.routers.llm-council-api.tls.certresolver=mytlschallenge"
       - "traefik.http.routers.llm-council-api.service=llm-council-api-service"
       - "traefik.http.routers.llm-council-api.priority=100"
-      
-      # Добавляем маршрут для доступа по IP-адресу
-      - "traefik.http.routers.llm-council-api-ip.rule=Host(`138.124.67.178`) && PathPrefix(`/consilium/council`)"
-      - "traefik.http.routers.llm-council-api-ip.entrypoints=web"
-      - "traefik.http.routers.llm-council-api-ip.service=llm-council-api-service"
       
       # Настройки для API сервиса с учетом SSE
       - "traefik.http.services.llm-council-api-service.loadbalancer.server.port=8000"
@@ -56,8 +49,6 @@ services:
       context: .
       dockerfile: docker/Dockerfile.frontend
     container_name: llm-council-frontend
-    ports:
-      - "8081:3000" # Публикация порта для доступа снаружи
     depends_on:
       - llm-council-backend
     networks:
@@ -79,16 +70,11 @@ services:
     labels:
       # Основной роут для фронтенда
       - "traefik.enable=true"
-      - "traefik.http.routers.llm-council.rule=Host(`creomatica.ru`) && PathPrefix(`/consilium`)"
+      - "traefik.http.routers.llm-council.rule=Host(`sovet.creomatica.ru`)"
       - "traefik.http.routers.llm-council.entrypoints=web,websecure"
       - "traefik.http.routers.llm-council.tls=true"
       - "traefik.http.routers.llm-council.tls.certresolver=mytlschallenge"
       - "traefik.http.routers.llm-council.service=llm-council-service"
-      
-      # Добавляем маршрут для доступа по IP-адресу
-      - "traefik.http.routers.llm-council-ip.rule=Host(`138.124.67.178`) && PathPrefix(`/consilium`)"
-      - "traefik.http.routers.llm-council-ip.entrypoints=web"
-      - "traefik.http.routers.llm-council-ip.service=llm-council-service"
       
       # Настройки для сервиса фронтенда
       - "traefik.http.services.llm-council-service.loadbalancer.server.port=3000"

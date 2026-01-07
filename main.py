@@ -31,7 +31,7 @@ app = FastAPI(title="LLM Council API", description="API for running LLM council 
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://creomatica.ru"],  # Production CORS настройки для нового домена
+    allow_origins=["https://sovet.creomatica.ru"],  # Production CORS настройки
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],  # Разрешить указанные методы
     allow_headers=["Content-Type", "Authorization"],  # Разрешить указанные заголовки
@@ -95,7 +95,7 @@ async def council_deliberation_stream(request: CouncilRequest):
         headers={
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
-            "Access-Control-Allow-Origin": "https://creomatica.ru",
+            "Access-Control-Allow-Origin": "https://sovet.creomatica.ru",
             "Access-Control-Allow-Headers": "Cache-Control"
         }
     )

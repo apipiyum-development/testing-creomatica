@@ -2,11 +2,11 @@
 
 ## Обзор
 
-Этот документ описывает процесс развертывания приложения LLM Council с использованием Docker и Docker Compose. Приложение состоит из фронтенд-части (React/Vite) и бэкенд-части (FastAPI), объединенных в одном контейнере с использованием nginx и supervisor. Приложение размещается на подпути `/consilium` домена `creomatica.ru`.
+Этот документ описывает процесс развертывания приложения LLM Council с использованием Docker и Docker Compose. Приложение состоит из фронтенд-части (React/Vite) и бэкенд-части (FastAPI), объединенных в одном контейнере с использованием nginx и supervisor.
 
 ## Архитектура
 
-- **Фронтенд**: React/Vite приложение, обслуживаемое через nginx на порту 3000, размещается на подпути `/consilium`
+- **Фронтенд**: React/Vite приложение, обслуживаемое через nginx на порту 3000
 - **Бэкенд**: FastAPI приложение, работающее на порту 8000
 - **Прокси**: nginx для маршрутизации запросов между фронтендом и бэкендом
 - **Управление процессами**: supervisor для одновременного запуска nginx и uvicorn
@@ -16,7 +16,7 @@
 
 - Docker (версия 20.10 или выше)
 - Docker Compose (версия 2.0 или выше)
-- Доступ к домену `creomatica.ru` с возможностью настройки подпути `/consilium`
+- Доступ к домену `llm.clusterdev.ru`
 - API ключ для PolzaAI
 
 ## Подготовка
@@ -70,12 +70,12 @@ docker-compose ps
 
 ### 1. Проверка доступности веб-интерфейса
 
-Откройте в браузере: `https://creomatica.ru/consilium`
+Откройте в браузере: `https://llm.clusterdev.ru`
 
 ### 2. Проверка API
 
 ```bash
-curl -X GET https://creomatica.ru/consilium/
+curl -X GET https://llm.clusterdev.ru/
 ```
 
 Должен вернуться JSON: `{"message": "LLM Council API is running!"}`
@@ -83,7 +83,7 @@ curl -X GET https://creomatica.ru/consilium/
 ### 3. Проверка API эндпоинта совета
 
 ```bash
-curl -X POST https://creomatica.ru/consilium/council \
+curl -X POST https://llm.clusterdev.ru/council \
   -H "Content-Type: application/json" \
   -d '{"query": "Тестовый запрос"}'
 ```
@@ -127,7 +127,7 @@ docker-compose exec llm-council cat /var/log/uvicorn.log
 ### 3. Проблемы с SSL/HTTPS
 
 - Убедитесь, что Traefik настроен корректно
-- Проверьте, что домен `creomatica.ru` указывает на правильный IP-адрес
+- Проверьте, что домен `llm.clusterdev.ru` указывает на правильный IP-адрес
 
 ### 4. Проблемы с SSE (Server-Sent Events)
 
@@ -143,8 +143,8 @@ docker-compose exec llm-council cat /var/log/uvicorn.log
 ### docker/nginx.conf
 
 Конфигурация nginx для маршрутизации запросов:
-- Статические файлы фронтенда на `/consilium/`
-- API запросы к бэкенду на `/consilium/council`
+- Статические файлы фронтенда на `/`
+- API запросы к бэкенду на `/council`
 
 ### docker-compose.yml
 

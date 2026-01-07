@@ -8,7 +8,7 @@ services:
     # ... остальные настройки
     labels:
       # Основной роут для фронтенда
-      - "traefik.http.routers.llm-council.rule=Host(`llm.clusterdev.ru`)"
+      - "traefik.http.routers.llm-council.rule=Host(`sovet.creomatica.ru`)"
       - "traefik.http.routers.llm-council.entrypoints=web,websecure"
       - "traefik.http.routers.llm-council.tls=true"
       - "traefik.http.routers.llm-council.tls.certresolver=mytlschallenge"
@@ -19,7 +19,7 @@ services:
       - "traefik.http.services.llm-council-service.loadbalancer.server.scheme=http"
       
       # Роут для API (включая SSE endpoint)
-      - "traefik.http.routers.llm-council-api.rule=Host(`llm.clusterdev.ru`) && PathPrefix(`/council`)"
+      - "traefik.http.routers.llm-council-api.rule=Host(`sovet.creomatica.ru`) && PathPrefix(`/council`)"
       - "traefik.http.routers.llm-council-api.entrypoints=web,websecure"
       - "traefik.http.routers.llm-council-api.tls=true"
       - "traefik.http.routers.llm-council-api.tls.certresolver=mytlschallenge"
