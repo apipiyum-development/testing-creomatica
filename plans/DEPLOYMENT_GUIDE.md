@@ -16,7 +16,7 @@
 
 - Docker (версия 20.10 или выше)
 - Docker Compose (версия 2.0 или выше)
-- Доступ к домену `llm.clusterdev.ru`
+- Доступ к домену `https://sovet.creomatica.ru`
 - API ключ для PolzaAI
 
 ## Подготовка
@@ -70,12 +70,12 @@ docker-compose ps
 
 ### 1. Проверка доступности веб-интерфейса
 
-Откройте в браузере: `https://llm.clusterdev.ru`
+Откройте в браузере: `https://sovet.creomatica.ru`
 
 ### 2. Проверка API
 
 ```bash
-curl -X GET https://llm.clusterdev.ru/
+curl -X GET https://sovet.creomatica.ru
 ```
 
 Должен вернуться JSON: `{"message": "LLM Council API is running!"}`
@@ -83,7 +83,7 @@ curl -X GET https://llm.clusterdev.ru/
 ### 3. Проверка API эндпоинта совета
 
 ```bash
-curl -X POST https://llm.clusterdev.ru/council \
+curl -X POST https://sovet.creomatica.ru/council \
   -H "Content-Type: application/json" \
   -d '{"query": "Тестовый запрос"}'
 ```
@@ -127,7 +127,7 @@ docker-compose exec llm-council cat /var/log/uvicorn.log
 ### 3. Проблемы с SSL/HTTPS
 
 - Убедитесь, что Traefik настроен корректно
-- Проверьте, что домен `llm.clusterdev.ru` указывает на правильный IP-адрес
+- Проверьте, что домен `https://sovet.creomatica.ru` указывает на правильный IP-адрес
 
 ### 4. Проблемы с SSE (Server-Sent Events)
 

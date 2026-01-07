@@ -1,5 +1,0 @@
-{
-  "name": "LLM Council",
-  "description": "A multi-model AI advisory system where several LLMs (GPT, Grok, Gemini, Claude) deliberate and produce a consensus answer.",
-  "requestFramePermissions": []
-}
