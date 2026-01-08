@@ -9,6 +9,7 @@ const CosmicSoundToggle = () => {
   useEffect(() => {
     // Инициализация аудио
     const audio = new Audio('/assets/hero/sample.mp3');
+    audio.preload = 'auto';
     audio.loop = true;
     audio.volume = 1;
     audioRef.current = audio;
