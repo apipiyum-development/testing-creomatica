@@ -253,11 +253,11 @@
   .w-full.bg-transparent.border-b.border-white\/10.px-0.py-4.sm\:py-8 {
     padding-top: 0.5rem !important;
     padding-bottom: 0.5rem !important;
-    font-size: 1.25rem !important;
+    font-size: 1.5rem !important;
   }
   
   .flex.flex-col.items-center.gap-4.sm\:gap-6.transition-all.duration-1000 {
-    gap: 1rem !important;
+    gap: 2.5rem !important;
   }
   
   .text-\[10px\].text-white\/20.tracking-\[0\.3em\].font-mono.uppercase {

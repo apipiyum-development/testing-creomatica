@@ -199,7 +199,7 @@ const App: React.FC = () => {
       <div className="relative h-screen w-full bg-black text-white overflow-hidden select-none font-light tracking-tight flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500 mb-4"></div>
-          <p className="text-white/40">Загрузка ресурсов...</p>
+          <p className="text-white/40">Собираем весь совет...</p>
         </div>
       </div>
     );
