@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 
 const CosmicSoundToggle = () => {
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fadeInterval = useRef<NodeJS.Timeout | null>(null);
 
@@ -10,7 +10,7 @@ const CosmicSoundToggle = () => {
     // Инициализация аудио
     const audio = new Audio('/assets/hero/sample.mp3');
     audio.loop = true;
-    audio.volume = 0;
+    audio.volume = 0.5;
     audioRef.current = audio;
 
     // Функция для обхода блокировки автоплея
@@ -18,7 +18,12 @@ const CosmicSoundToggle = () => {
       if (audioRef.current) {
         // "Прогрев" аудио-движка
         audioRef.current.play().then(() => {
-          if (isMuted) audioRef.current.pause();
+          if (isMuted) {
+            audioRef.current.pause();
+            audioRef.current.volume = 0;
+          } else {
+            audioRef.current.volume = 0.5;
+          }
         }).catch(() => {});
       }
       window.removeEventListener('click', initAudioContext);
@@ -70,12 +75,12 @@ const CosmicSoundToggle = () => {
       onClick={handleToggle}
       className={`fixed bottom-6 left-6 z-50 p-3 rounded-full border transition-all duration-500 ${
         !isMuted
-          ? 'bg-cyan-500/20 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.4)]'
+          ? 'bg-purple-500/20 border-purple-400 shadow-[0_0_20px_rgba(157,0,255,0.4)]'
           : 'bg-black/40 border-white/10 hover:border-white/30'
       }`}
     >
       {!isMuted ? (
-        <Volume2 className="w-6 h-6 text-cyan-400 animate-pulse" />
+        <Volume2 className="w-6 h-6 text-purple-400 animate-pulse" />
       ) : (
         <VolumeX className="w-6 h-6 text-gray-400" />
       )}
