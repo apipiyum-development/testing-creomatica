@@ -30,7 +30,7 @@ services:
     labels:
       # Роут для API (включая SSE endpoint)
       - "traefik.enable=true"
-      - "traefik.http.routers.llm-council-api.rule=Host(`ваш_домен.ru`) && PathPrefix(`/council`)"
+      - "traefik.http.routers.llm-council-api.rule=Host(`sovet.creomatica.ru`) && PathPrefix(`/council`)"
       - "traefik.http.routers.llm-council-api.entrypoints=web,websecure"
       - "traefik.http.routers.llm-council-api.tls=true"
       - "traefik.http.routers.llm-council-api.tls.certresolver=mytlschallenge"
@@ -70,7 +70,7 @@ services:
     labels:
       # Основной роут для фронтенда
       - "traefik.enable=true"
-      - "traefik.http.routers.llm-council.rule=Host(`ваш_домен.ru`)"
+      - "traefik.http.routers.llm-council.rule=Host(`sovet.creomatica.ru`)"
       - "traefik.http.routers.llm-council.entrypoints=web,websecure"
       - "traefik.http.routers.llm-council.tls=true"
       - "traefik.http.routers.llm-council.tls.certresolver=mytlschallenge"

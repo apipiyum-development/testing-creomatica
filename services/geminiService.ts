@@ -2,7 +2,7 @@
 import { CouncilResponse } from "../types";
 
 export const executeCouncilDeliberation = async (query: string): Promise<CouncilResponse> => {
-  const response = await fetch('https://ваш_домен.ru/council', {
+  const response = await fetch('https://sovet.creomatica.ru/council', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -28,9 +28,9 @@ export const executeCouncilDeliberationStream = (
   return new Promise((resolve, reject) => {
     // Для стриминга через POST запрос, нужно использовать другой подход
     // потому что EventSource не поддерживает POST запросы
-     
+    
     // Отправляем запрос на стриминг
-    fetch('https://ваш_домен.ru/council/stream', {
+    fetch('https://sovet.creomatica.ru/council/stream', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
