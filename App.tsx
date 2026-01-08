@@ -7,7 +7,28 @@ import { MODELS, STAGES, CREOMATICA_LOGO } from './constants';
 import { executeCouncilDeliberation, executeCouncilDeliberationStream } from './services/geminiService';
 import CosmicSoundToggle from '@/src/components/CosmicSoundToggle';
 
+// Предварительная загрузка изображения и звука
+const preloadResources = async () => {
+  // Загрузка изображения
+  const img = new Image();
+  img.src = '/assets/hero/ready_consil.jpg';
+  await new Promise((resolve) => {
+    img.onload = resolve;
+    img.onerror = resolve; // Резолвим даже в случае ошибки
+  });
+
+  // Загрузка звука
+  const audio = new Audio('/assets/hero/sample.mp3');
+  audio.preload = 'auto';
+  // Ждем метаданных, чтобы убедиться, что аудио готово
+  await new Promise((resolve) => {
+    audio.onloadedmetadata = resolve;
+    audio.onerror = resolve; // Резолвим даже в случае ошибки
+  });
+};
+
 const App: React.FC = () => {
+  const [resourcesLoaded, setResourcesLoaded] = useState(false);
   const [state, setState] = useState<CouncilState>({
     stage: DeliberationStage.IDLE,
     query: '',
@@ -25,6 +46,13 @@ const App: React.FC = () => {
   // Таймеры для задержки переходов между стадиями
   const stageTransitionTimer = useRef<NodeJS.Timeout | null>(null);
   
+  // Загружаем ресурсы при монтировании компонента
+  useEffect(() => {
+    preloadResources().then(() => {
+      setResourcesLoaded(true);
+    });
+  }, []);
+
   // Очистка таймеров при размонтировании
   useEffect(() => {
     return () => {
@@ -164,6 +192,18 @@ const App: React.FC = () => {
       setViewStage(targetStage);
     }
   };
+
+  // Показываем индикатор загрузки до загрузки ресурсов
+  if (!resourcesLoaded) {
+    return (
+      <div className="relative h-screen w-full bg-black text-white overflow-hidden select-none font-light tracking-tight flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500 mb-4"></div>
+          <p className="text-white/40">Загрузка ресурсов...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-screen w-full bg-black text-white overflow-hidden select-none font-light tracking-tight">
