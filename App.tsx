@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import { DeliberationStage, CouncilState } from './types';
 import { MODELS, STAGES, CREOMATICA_LOGO } from './constants';
 import { executeCouncilDeliberation, executeCouncilDeliberationStream } from './services/geminiService';
+import CosmicSoundToggle from '@/src/components/CosmicSoundToggle';
 
 const App: React.FC = () => {
   const [state, setState] = useState<CouncilState>({
@@ -379,6 +380,7 @@ const App: React.FC = () => {
           Объективное решение через<br className="hidden sm:block"/>синтез нейронных мнений
         </div>
       </footer>
+      <CosmicSoundToggle />
     </div>
   );
 };
