@@ -10,7 +10,7 @@ const CosmicSoundToggle = () => {
     // Инициализация аудио
     const audio = new Audio('/assets/hero/sample.mp3');
     audio.loop = true;
-    audio.volume = 0.5;
+    audio.volume = 1;
     audioRef.current = audio;
 
     // Функция для обхода блокировки автоплея
@@ -22,7 +22,7 @@ const CosmicSoundToggle = () => {
             audioRef.current.pause();
             audioRef.current.volume = 0;
           } else {
-            audioRef.current.volume = 0.5;
+            audioRef.current.volume = 1;
           }
         }).catch(() => {});
       }
@@ -63,7 +63,7 @@ const CosmicSoundToggle = () => {
   const handleToggle = () => {
     if (isMuted && audioRef.current) {
       audioRef.current.play();
-      fade(0.5); // Плавный подъем до 50%
+      fade(1); // Плавный подъем до 100%
     } else {
       fade(0); // Плавный уход в 0
     }
